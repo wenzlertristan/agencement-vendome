@@ -2018,6 +2018,7 @@
 
         <form id="contactForm" name="devis" method="POST" data-netlify="true" netlify-honeypot="bot-field">
             <input type="hidden" name="form-name" value="devis">
+            <input type="hidden" name="subject" id="mailSubject" value="🔔 Nouveau devis — agencement-vendome.fr">
             <p style="display:none"><input name="bot-field"></p>
             <div class="form-row">
                 <div class="form-group">
@@ -2045,16 +2046,16 @@
                 <label for="service">Type de projet *</label>
                 <select id="service" name="service" required>
                     <option value="">— Sélectionnez votre projet —</option>
-                    <option value="renovation">Rénovation intérieure complète</option>
-                    <option value="agencement">Agencement intérieur</option>
-                    <option value="menuiserie">Menuiserie</option>
-                    <option value="placo">Placo / Cloisons</option>
-                    <option value="parquet">Pose de parquet</option>
-                    <option value="cuisine">Pose de cuisine</option>
-                    <option value="meubles">Meubles sur-mesure</option>
-                    <option value="magasin">Agencement de magasin</option>
-                    <option value="camion">Agencement de camion</option>
-                    <option value="autre">Autre / Plusieurs travaux</option>
+                    <option value="Rénovation intérieure complète">Rénovation intérieure complète</option>
+                    <option value="Agencement intérieur">Agencement intérieur</option>
+                    <option value="Menuiserie">Menuiserie</option>
+                    <option value="Placo / Cloisons">Placo / Cloisons</option>
+                    <option value="Pose de parquet">Pose de parquet</option>
+                    <option value="Pose de cuisine">Pose de cuisine</option>
+                    <option value="Meubles sur-mesure">Meubles sur-mesure</option>
+                    <option value="Agencement de magasin">Agencement de magasin</option>
+                    <option value="Agencement de camion">Agencement de camion</option>
+                    <option value="Autre / Plusieurs travaux">Autre / Plusieurs travaux</option>
                 </select>
             </div>
 
@@ -2287,6 +2288,13 @@ document.getElementById('contactForm').addEventListener('submit', async function
     btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours...';
 
+    /* Objet du mail dynamique : "🔔 Nouveau devis – Prénom Nom – Service" */
+    const prenom  = (form.querySelector('[name=prenom]').value  || '').trim();
+    const nom     = (form.querySelector('[name=nom]').value     || '').trim();
+    const service = (form.querySelector('[name=service]').value || 'Projet non précisé');
+    document.getElementById('mailSubject').value =
+        `🔔 Nouveau devis — ${prenom} ${nom} — ${service}`;
+
     try {
         const res = await fetch('/', {
             method: 'POST',
@@ -2398,14 +2406,19 @@ function endOpts() {
 /* Envoie le lead collecté par le chatbot via Netlify Forms */
 async function sendChatLead(info) {
     try {
+        const prenom  = info.prenom  || '';
+        const service = info.projet  || 'Chatbot';
+        const subject = `🔔 Lead chatbot — ${prenom} — ${service}`;
         const params = new URLSearchParams({
             'form-name': 'devis',
-            'prenom':    info.prenom   || '',
-            'telephone': info.tel      || '',
-            'service':   info.projet   || 'Chatbot',
-            'ville':     info.ville    || '',
-            'message':   `Lead chatbot — Projet : ${info.projet||'?'} | Surface : ${info.surface||'?'} | Ville : ${info.ville||'?'}`,
-            'email':     'benjaminagencement@gmail.com'
+            'subject':   subject,
+            'prenom':    prenom,
+            'nom':       '(chatbot)',
+            'telephone': info.tel    || '',
+            'email':     info.email  || '',
+            'service':   service,
+            'ville':     info.ville  || '',
+            'message':   `Surface : ${info.surface || 'non précisée'} | Source : chatbot`
         });
         await fetch('/', {
             method:  'POST',
@@ -2517,14 +2530,20 @@ function handleInput(txt) {
 
     } else if (state === 'devis_tel') {
         userInfo.tel = txt;
+        state = 'devis_email';
+        botMsg(`Merci ! Et votre <strong>adresse email</strong> ? <span style="font-size:12px;opacity:0.6">(facultatif — tapez « / » pour passer)</span>`);
+
+    } else if (state === 'devis_email') {
+        userInfo.email = (txt === '/' || txt.toLowerCase() === 'non') ? '' : txt;
         state = 'done';
         sendChatLead(userInfo);
         botMsg(`✅ <strong>Parfait ${userInfo.prenom} !</strong> Voici ce que j'ai noté :<br><br>
             📋 <strong>Projet :</strong> ${userInfo.projet || '?'}<br>
             📐 <strong>Surface :</strong> ${userInfo.surface || '?'}<br>
             📍 <strong>Ville :</strong> ${userInfo.ville || '?'}<br>
-            📞 <strong>Téléphone :</strong> ${txt}<br><br>
-            Benjamin vous recontacte <strong>sous 24h</strong> ! 🙌`);
+            📞 <strong>Téléphone :</strong> ${userInfo.tel}<br>
+            ${userInfo.email ? `📧 <strong>Email :</strong> ${userInfo.email}<br>` : ''}
+            <br>Benjamin vous recontacte <strong>sous 24h</strong> ! 🙌`);
         setTimeout(() => showOpts([
             { ico: 'fas fa-comment', txt: 'Autre question', act: 'restart' },
         ]), 1800);
@@ -2536,9 +2555,14 @@ function handleInput(txt) {
 
     } else if (state === 'rappel_tel') {
         userInfo.tel = txt;
+        state = 'rappel_email';
+        botMsg(`Parfait ! Et votre <strong>adresse email</strong> ? <span style="font-size:12px;opacity:0.6">(facultatif — tapez « / » pour passer)</span>`);
+
+    } else if (state === 'rappel_email') {
+        userInfo.email = (txt === '/' || txt.toLowerCase() === 'non') ? '' : txt;
         state = 'done';
-        sendChatLead({ prenom: userInfo.prenom, tel: txt, projet: 'Rappel téléphonique' });
-        botMsg(`✅ Noté ! Benjamin rappelle <strong>${userInfo.prenom}</strong> au <strong>${txt}</strong> très prochainement. À bientôt ! 😊`);
+        sendChatLead({ prenom: userInfo.prenom, tel: userInfo.tel, email: userInfo.email, projet: 'Rappel téléphonique' });
+        botMsg(`✅ Noté ! Benjamin rappelle <strong>${userInfo.prenom}</strong> au <strong>${userInfo.tel}</strong> très prochainement. À bientôt ! 😊`);
         setTimeout(() => showOpts([
             { ico: 'fas fa-comment', txt: 'Autre question', act: 'restart' },
         ]), 1500);
