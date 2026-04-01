@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Fond sombre arrondi -->
+  <rect width="200" height="200" rx="30" fill="#0d0d0d"/>
+
+  <!-- Barre dorée bas -->
+  <rect x="0" y="182" width="200" height="18" rx="0" fill="#C9A84C"/>
+  <rect x="0" y="182" width="200" height="18" rx="9" fill="#C9A84C"/>
+
+  <!-- Trait doré vertical séparateur central -->
+  <rect x="98" y="22" width="3" height="150" rx="1.5" fill="rgba(201,168,76,0.25)"/>
+
+  <!-- B gauche – plein -->
+  <text
+    x="14"
+    y="158"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-weight="700"
+    font-size="134"
+    fill="#C9A84C"
+    letter-spacing="-4">B</text>
+
+  <!-- B droit – transparent, décalé -->
+  <text
+    x="100"
+    y="158"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-weight="700"
+    font-size="134"
+    fill="#C9A84C"
+    opacity="0.22"
+    letter-spacing="-4">B</text>
+</svg>
