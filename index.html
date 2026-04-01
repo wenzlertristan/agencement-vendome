@@ -38,10 +38,13 @@
     <meta name="google-site-verification" content="fMeFnk9fBZPDDgObPI2IyXpcooYw9UBut4ogN5ql5MQ">
 
     <!-- ===== FAVICON & LOGO ===== -->
+    <link rel="icon" type="image/png" sizes="48x48" href="favicon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="favicon.png">
     <link rel="shortcut icon" href="favicon.png">
+    <meta name="msapplication-TileImage" content="favicon.png">
+    <meta name="msapplication-TileColor" content="#0d0d0d">
     <meta name="theme-color" content="#C9A84C">
 
     <!-- Schema.org JSON-LD -->
@@ -1179,7 +1182,7 @@
             padding: 13px 17px;
             border: 1.5px solid var(--gray-light);
             border-radius: 10px;
-            font-size: 14px;
+            font-size: 16px; /* 16px min pour éviter le zoom iOS sur focus */
             font-family: var(--font-sans);
             color: var(--dark);
             background: var(--white);
@@ -1501,7 +1504,7 @@
             padding: 9px 15px;
             border: 1.5px solid var(--gray-light);
             border-radius: 50px;
-            font-size: 13px;
+            font-size: 16px; /* 16px min pour éviter le zoom iOS sur focus */
             font-family: var(--font-sans);
             outline: none;
             transition: var(--ease);
@@ -1683,11 +1686,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- Mobile menu -->
 <div class="mobile-menu" id="mobileMenu">
     <a href="#services"     class="mob-link">Services</a>
-    <a href="#pourquoi"     class="mob-link">Expertise</a>
+    <a href="#benjamin"     class="mob-link">Votre artisan</a>
     <a href="#realisations" class="mob-link">Réalisations</a>
     <a href="#temoignages"  class="mob-link">Avis clients</a>
     <a href="#contact"      class="mob-link">Contact</a>
-    <a href="tel:+33786894732" class="btn btn-gold">Appeler Benjamin</a>
+    <a href="#devis-form"   class="btn btn-gold" style="margin-top:8px;">Devis gratuit</a>
+    <a href="tel:+33786894732" class="btn btn-outline-gold" style="margin-top:8px;"><i class="fas fa-phone" style="margin-right:8px;"></i>07 86 89 47 32</a>
 </div>
 
 
