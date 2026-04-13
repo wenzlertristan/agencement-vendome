@@ -2309,10 +2309,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
         <p class="fsub">Sans engagement — Benjamin vous recontacte personnellement</p>
 
-        <form id="contactForm" name="devis" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-            <input type="hidden" name="form-name" value="devis">
-            <input type="hidden" name="subject" id="mailSubject" value="🔔 Nouveau devis — agencement-vendome.fr">
-            <p style="display:none"><input name="bot-field"></p>
+        <form id="contactForm" name="devis" method="POST" action="https://formsubmit.co/benjaminagencement@gmail.com">
+            <input type="hidden" name="_subject" id="mailSubject" value="🔔 Nouveau devis — agencement-vendome.fr">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_template" value="table">
+            <input type="text" name="_honey" style="display:none">
 
             <div class="form-row">
                 <div class="form-group">
@@ -2574,7 +2575,7 @@ window.addEventListener('scroll', () => {
     stickyCta.classList.toggle('show', window.scrollY > 500);
 });
 
-/* ---- Form submit (Netlify Forms AJAX) ---- */
+/* ---- Form submit (FormSubmit.co AJAX) ---- */
 document.getElementById('contactForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     const form    = this;
@@ -2591,10 +2592,11 @@ document.getElementById('contactForm').addEventListener('submit', async function
         `🔔 Nouveau devis — ${prenom} — ${service}`;
 
     try {
-        const res = await fetch('/', {
+        const data = Object.fromEntries(new FormData(form));
+        const res = await fetch('https://formsubmit.co/ajax/benjaminagencement@gmail.com', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams(new FormData(form)).toString()
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(data)
         });
 
         if (res.ok) {
@@ -2698,27 +2700,26 @@ function endOpts() {
     ]);
 }
 
-/* Envoie le lead collecté par le chatbot via Netlify Forms */
+/* Envoie le lead collecté par le chatbot via FormSubmit.co */
 async function sendChatLead(info) {
     try {
         const prenom  = info.prenom  || '';
         const service = info.projet  || 'Chatbot';
-        const subject = `🔔 Lead chatbot — ${prenom} — ${service}`;
-        const params = new URLSearchParams({
-            'form-name': 'devis',
-            'subject':   subject,
-            'prenom':    prenom,
-            'nom':       '(chatbot)',
-            'telephone': info.tel    || '',
-            'email':     info.email  || '',
-            'service':   service,
-            'ville':     info.ville  || '',
-            'message':   `Surface : ${info.surface || 'non précisée'} | Source : chatbot`
-        });
-        await fetch('/', {
+        await fetch('https://formsubmit.co/ajax/benjaminagencement@gmail.com', {
             method:  'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body:    params.toString()
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({
+                _subject:  `🔔 Lead chatbot — ${prenom} — ${service}`,
+                _captcha:  'false',
+                _template: 'table',
+                prenom:    prenom,
+                nom:       '(chatbot)',
+                telephone: info.tel    || '',
+                email:     info.email  || '',
+                service:   service,
+                ville:     info.ville  || '',
+                message:   `Surface : ${info.surface || 'non précisée'} | Source : chatbot`
+            })
         });
     } catch(e) {}
 }
