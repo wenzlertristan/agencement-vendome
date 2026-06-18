@@ -1283,6 +1283,8 @@
             margin-top: 4px;
         }
         .form-submit:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: var(--shadow-gold); }
+        .btn-text-short { display: none; }
+        .btn-text-full  { display: inline; }
 
         .form-note {
             text-align: center;
@@ -1662,6 +1664,20 @@
         }
 
         @media (max-width: 768px) {
+            /* ---- Réduction des espaces entre sections ---- */
+            #services, #realisations, #temoignages { padding: 70px 0; }
+            #benjamin { padding: 60px 0; }
+            #pourquoi { padding: 70px 0; }
+            #faq { padding: 60px 0 !important; }
+            #cta-band { padding: 70px 0; }
+            .section-header { margin-bottom: 44px; }
+            .why-intro { margin-bottom: 28px; }
+            .stats-grid { margin-top: 0; }
+            .real-cta { margin-top: 30px; }
+            /* Fusion visuelle benjamin + pourquoi (même fond sombre) */
+            #benjamin { padding-bottom: 0; }
+            #pourquoi { padding-top: 60px; }
+
             .nav-links, .nav-tel { display: none; }
             .nav-right .btn { display: none; }
             .hamburger { display: flex; }
@@ -1678,32 +1694,69 @@
             #chat-window { right: 14px; left: 14px; width: auto; bottom: 96px; }
             #chat-toggle  { right: 14px; bottom: 14px; }
 
-            #trust .container { gap: 20px; }
+            #trust .container { gap: 14px; }
+            .trust-item { font-size: 12px; }
             .form-row { grid-template-columns: 1fr; }
             .form-box { padding: 32px 22px; }
+
+            /* Bouton formulaire */
+            .btn-text-full  { display: none; }
+            .btn-text-short { display: inline; }
 
             /* Benjamin section mobile */
             .benjamin-grid { grid-template-columns: 1fr; gap: 40px; }
             .benjamin-photo-frame { aspect-ratio: 4/5; }
             .benjamin-badge { right: 12px; bottom: 12px; }
             #float-tel { display: flex; }
+
+            /* FAQ */
+            .faq-acc-btn { font-size: 14px; }
+            .faq-acc-inner p { padding-right: 0; }
+
+            /* Logo navbar — évite le débordement */
+            .logo-text strong { font-size: 14px; }
+            .logo-text span   { font-size: 8px; }
         }
 
         @media (max-width: 480px) {
-            .hero-title { font-size: 40px; }
-            .hero-stats { gap: 28px; }
-            .hstat-number { font-size: 30px; }
+            .hero-title { font-size: 36px; }
+            .hero-stats { gap: 20px; flex-wrap: wrap; justify-content: center; }
+            .hstat-number { font-size: 28px; }
+
+            /* Trust bar : 2 colonnes */
+            #trust .container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+            .trust-item { justify-content: center; font-size: 11px; }
 
             #sticky-cta {
-                left: 80px;   /* 14px btn tel + 54px + 12px gap */
-                right: 80px;  /* 14px chat btn + 54px + 12px gap */
+                left: 80px;
+                right: 80px;
                 transform: none;
                 bottom: 14px;
             }
             #sticky-cta a { width: 100%; justify-content: center; font-size: 12px; padding: 11px 12px; }
 
-            .btn { padding: 13px 22px; font-size: 13px; }
+            .btn { padding: 13px 20px; font-size: 13px; }
             .benjamin-cta-row { flex-direction: column; }
+            .form-submit { font-size: 14px; padding: 14px 12px; }
+            .hero-tag { font-size: 10px; letter-spacing: 1px; padding: 6px 12px; }
+            .hero-cta { flex-direction: column; align-items: center; }
+            .hero-cta .btn { width: 100%; justify-content: center; }
+            /* Espaces encore plus réduits sur très petits écrans */
+            #services, #realisations, #temoignages { padding: 52px 0; }
+            #benjamin { padding: 48px 0 0; }
+            #pourquoi { padding: 48px 0; }
+            #faq { padding: 48px 0 !important; }
+            #cta-band { padding: 52px 0; }
+            .section-header { margin-bottom: 32px; }
+            .hero-stats { margin-top: 32px; }
+            .hero-desc { margin-bottom: 32px !important; }
+
+            /* Section header mobile */
+            .section-title { font-size: 30px; }
+            .contact-header { padding: 44px 16px 28px; }
+
+            /* Footer bottom links empilés */
+            .footer-bottom-links { flex-direction: column; gap: 8px; align-items: center; }
         }
     </style>
 </head>
@@ -2563,7 +2616,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
             <button type="submit" class="form-submit">
                 <i class="fas fa-paper-plane"></i>
-                Envoyer ma demande — Réponse sous 24h
+                <span class="btn-text-full">Envoyer ma demande — Réponse sous 24h</span>
+                <span class="btn-text-short">Envoyer ma demande</span>
             </button>
 
             <p class="form-note">
